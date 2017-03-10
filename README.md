@@ -10,7 +10,7 @@ In particular this is useful for checking out a new branch off of a fresh
 needs to be merged back into master.
 
 # What it does
-Here's the procedure used for refreshing the branch:
+Here's the procedure used for refreshing the local branch:
 * Check if the given remote name exists. If not, exit.
 * Check if the given branch name exists in the local repo. If not, exit.
 * Check if the given branch name exists in the remote repo. If not, exit.
