@@ -1,23 +1,43 @@
 #!/bin/bash
 
+# Git Refresh (git-refresh)
+# A simple utility for refreshing local branches from remote.
+# Version:      0.1.0
+# Maintainer:   Michael Zazaian, mike@zop.io, http://zop.io
+# License:      This script is published under the AGPLv3 license.
+
 START_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
 REMOTE_NAME=$1
 REFRESH_BRANCH=$2
+EXIT_MESSAGE="Exiting git-refresh."
+
+echo "Starting git-refresh."
+echo "Refreshing local branch '$REFRESH_BRANCH' from remote '$REMOTE_NAME'."
+
+# check if the remote exists at all
+if [[ ! `git ls-remote $REMOTE_NAME` ]]; then
+  echo ""
+  echo "Remote repo $REMOTE_NAME does not appear to exist."
+  echo $EXIT_MESSAGE
+  exit
+fi
 
 # check if refresh branch exists at all
 if [[ ! `git branch --list $REFRESH_BRANCH` ]]; then
-  echo "Branch $2 does not exist on your local machine."
+  echo "Branch '$2' does not exist on your local machine."
+  echo $EXIT_MESSAGE
   exit
 fi
 
 # check if the refresh branch exists remotely
 if [[ ! `git ls-remote $REMOTE_NAME $REFRESH_BRANCH` ]]; then
-  echo "Branch $2 does not exist on tracked repository $1."
-  echo "Please push $2 to $1 prior to refreshing."
+  echo "Branch '$2' does not exist on tracked repository '$1'."
+  echo "Please push local branch to remote prior to refreshing."
+  echo $EXIT_MESSAGE
   exit
 fi
 
-# if currently on master, create a temp branch
+# if currently on the starting branch, create a temp branch
 if [ $START_BRANCH == $REFRESH_BRANCH ]; then
   NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
   TEMP_BRANCH="git-refresh-tmp-${NEW_UUID}"
@@ -33,3 +53,5 @@ git checkout $REFRESH_BRANCH
 if [ $START_BRANCH == $REFRESH_BRANCH ]; then
   git br -D $TEMP_BRANCH
 fi
+
+echo "git-refresh successfully refreshed local branch '$REFRESH_BRANCH' from remote '$REMOTE_NAME'."
