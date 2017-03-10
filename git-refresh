@@ -1,0 +1,35 @@
+#!/bin/bash
+
+START_BRANCH=$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')
+REMOTE_NAME=$1
+REFRESH_BRANCH=$2
+
+# check if refresh branch exists at all
+if [[ ! `git branch --list $REFRESH_BRANCH` ]]; then
+  echo "Branch $2 does not exist on your local machine."
+  exit
+fi
+
+# check if the refresh branch exists remotely
+if [[ ! `git ls-remote $REMOTE_NAME $REFRESH_BRANCH` ]]; then
+  echo "Branch $2 does not exist on tracked repository $1."
+  echo "Please push $2 to $1 prior to refreshing."
+  exit
+fi
+
+# if currently on master, create a temp branch
+if [ $START_BRANCH == $REFRESH_BRANCH ]; then
+  NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+  TEMP_BRANCH="git-refresh-tmp-${NEW_UUID}"
+  git checkout -b $TEMP_BRANCH
+fi
+
+# delete the refresh branch, fetch a clean branch from remote, and check it out
+git branch -D $REFRESH_BRANCH
+git fetch origin $REFRESH_BRANCH
+git checkout $REFRESH_BRANCH
+
+# if you started on the refresh branch, delete the temp that was created
+if [ $START_BRANCH == $REFRESH_BRANCH ]; then
+  git br -D $TEMP_BRANCH
+fi
