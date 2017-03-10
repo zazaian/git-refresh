@@ -21,10 +21,16 @@ Here's the procedure used for refreshing the local branch:
 * Checkout the newly-fetched branch on the local machine.
 * Delete the temp branch if you created one.
 
+# Installation
+Copy the BASH script into `/usr/local/bin` or any other directories that are
+included in the executable path on your machine.
+
+Be sure to set the file as executable as well: `sudo chmod +x git-refresh`.
+
 # Usage
 Usage is pretty simple. Here's the format:
 
-`git-remote remote_name branch_name`
+`git-refresh remote_name branch_name`
 
 So if I want to refresh my `waffles-are-great` branch on remote `origin`, then
 I could just do this:
@@ -32,6 +38,12 @@ I could just do this:
 `git-refresh origin waffles-are-great`
 
 The script will do the rest.
+
+# Support
+This script has only been tested in a BASH environment on Ubuntu 16.04 LTS
+desktop edition. It should be fairly portable to other BASH, zsh, and other
+shell environments by changing the first line from `#!/bin/bash` to whatever
+the path of your shell executable happens to be.
 
 # License
 This script is owned by Michael Zazaian of Zopio LC and is published under
