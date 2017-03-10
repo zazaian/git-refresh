@@ -1,5 +1,4 @@
 # Overview
-
 I wrote this script because I go through this same procedure all the time when
 using git, and it was bugging the hell out of me.
 
@@ -10,6 +9,7 @@ In particular this is useful for checking out a new branch off of a fresh
 `master`. This helps to avoid rebase conflicts later down the road when code
 needs to be merged back into master.
 
+# What it does
 Here's the procedure used for refreshing the branch:
 * Check if the given remote name exists. If not, exit.
 * Check if the given branch name exists in the local repo. If not, exit.
@@ -22,7 +22,6 @@ Here's the procedure used for refreshing the branch:
 * Delete the temp branch if you created one.
 
 # Usage
-
 Usage is pretty simple. Here's the format:
 
 `git-remote remote_name branch_name`
@@ -35,6 +34,5 @@ I could just do this:
 The script will do the rest.
 
 # License
-
 This script is owned by Michael Zazaian of Zopio LC and is published under
 version 3 of the GNU Affero General Public License.
