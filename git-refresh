@@ -52,6 +52,9 @@ git checkout $REFRESH_BRANCH
 # if you started on the refresh branch, delete the temp that was created
 if [ $START_BRANCH == $REFRESH_BRANCH ]; then
   git br -D $TEMP_BRANCH
+else
+  # otherwise switch to the branch you started on
+  git checkout $START_BRANCH
 fi
 
 echo "git-refresh successfully refreshed local branch '$REFRESH_BRANCH' from remote '$REMOTE_NAME'."
